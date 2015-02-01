@@ -1,0 +1,79 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutAnimation="@anim/layout_animation_row_left_slide"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ConfirmStartFragment" >
+
+    <ImageView
+        android:id="@+id/imgSelectedConfrim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:contentDescription="@string/name1"
+        android:layout_gravity="center_horizontal"
+        android:padding="2sp" />
+
+    <TextView
+        android:id="@+id/txtNameConfirm"
+        android:layout_width="fill_parent"
+        android:layout_height="25sp"
+        android:layout_marginTop="15sp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/masterColor"
+        android:textIsSelectable="false"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDescConfirm"
+        android:layout_width="fill_parent"
+        android:layout_height="120sp"
+        android:layout_marginTop="5sp"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/insideGrad6"
+        android:textIsSelectable="false"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDetailConfirm"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/insideGrad6"
+        android:textIsSelectable="false"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtLabelConfirm"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:layout_marginTop="25sp"
+        android:gravity="center_horizontal"
+        android:text="@string/select_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/masterColor"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnConfirmStart"
+        android:layout_width="200sp"
+        android:layout_height="35sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10sp"
+        android:background="@drawable/button_start_selector"
+        android:textColor="@color/White"
+        android:textSize="18sp" />
+
+</LinearLayout>

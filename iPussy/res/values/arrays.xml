@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="language_list_preference">
+        <item>@string/preferenceLanguageCa</item>
+        <item>@string/preferenceLanguageEs</item>
+        <item>@string/preferenceLanguageEn</item>  
+    </string-array>
+
+    <string-array name="language_entryvalues_list_preference">
+        <item>ca</item>
+        <item>es</item>
+        <item>en</item>  
+    </string-array>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/preferenceConfig" >
+        <EditTextPreference
+            android:dialogTitle="@string/preferenceName"
+            android:key="username_preference"
+            android:summary="@string/preferenceName"
+            android:title="@string/preferenceName" />
+        <CheckBoxPreference
+            android:key="show_how_to_play_prefernce"
+            android:title="@string/preferenceShowHowToPlay" 
+            android:persistent="true"
+      		android:defaultValue="true" />
+         <CheckBoxPreference
+            android:key="volumen_prefernce"
+            android:title="@string/preferenceVolumen" 
+            android:persistent="true"/>
+        <CheckBoxPreference
+            android:key="vibrate_prefernce"
+            android:title="@string/preferenceVibrate"
+            android:persistent="true"
+            android:defaultValue="true" />
+        <ListPreference
+            android:dialogTitle="@string/preferenceLanguageChoose"
+            android:entries="@array/language_list_preference"
+            android:entryValues="@array/language_entryvalues_list_preference"
+            android:key="language_list_preference"
+            android:title="@string/preferenceLanguage" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preferenceMore" >
+        <Preference
+            android:key="version_preference"
+            android:summary="1.0-BETA"
+            android:title="@string/preferenceVersion" />
+        <Preference
+            android:key="about"
+            android:summary="BelImar developments and Allinagency"
+            android:title="@string/preferenceAbout" />
+        <Preference
+            android:key="terms"
+            android:summary="@string/preferenceTermsOfUseSummary"
+            android:title="@string/preferenceTermsOfUse" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

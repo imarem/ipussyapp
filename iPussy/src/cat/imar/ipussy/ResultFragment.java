@@ -85,12 +85,15 @@ public class ResultFragment extends SherlockActivity {
 		super.onStart();
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
+		//es recupera el resultat via itntent.
 		result = (Result) getIntent().getSerializableExtra("result");
+		//Es recuperen els valors, noms, imatge del objecet result que
+		//conté el bean amb el model.
 		txtNameResult.setText(result.getNameModelPath());
 		txtDescResult.setText(result.getResultDescriptionPath());
 		txtLabelResultFinal.setText(result.getResultPath());
 		txtLabelResultEnd.setText(result.getResultMessageLowerPath());
+		//efecte de picar l'ull
 		StateListDrawable states = new StateListDrawable();
 		states.addState(new int[] { android.R.attr.state_pressed },
 				getResources().getDrawable(result.getImgModelPathClose()));

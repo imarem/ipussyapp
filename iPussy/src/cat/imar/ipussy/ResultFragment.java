@@ -1,9 +1,11 @@
 package cat.imar.ipussy;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -14,14 +16,25 @@ import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -75,7 +88,7 @@ public class ResultFragment extends SherlockActivity {
 			public void onClick(View v) {
 				ResultFragment.this.finish();
 				startActivity(new Intent(getApplicationContext(),
-						MainActivity.class));	
+						MainActivity.class));
 			}
 		});
 	}
@@ -85,15 +98,15 @@ public class ResultFragment extends SherlockActivity {
 		super.onStart();
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		//es recupera el resultat via itntent.
+		// es recupera el resultat via itntent.
 		result = (Result) getIntent().getSerializableExtra("result");
-		//Es recuperen els valors, noms, imatge del objecet result que
-		//conté el bean amb el model.
+		// Es recuperen els valors, noms, imatge del objecet result que
+		// conté el bean amb el model.
 		txtNameResult.setText(result.getNameModelPath());
 		txtDescResult.setText(result.getResultDescriptionPath());
 		txtLabelResultFinal.setText(result.getResultPath());
 		txtLabelResultEnd.setText(result.getResultMessageLowerPath());
-		//efecte de picar l'ull
+		// efecte de picar l'ull
 		StateListDrawable states = new StateListDrawable();
 		states.addState(new int[] { android.R.attr.state_pressed },
 				getResources().getDrawable(result.getImgModelPathClose()));
@@ -105,14 +118,14 @@ public class ResultFragment extends SherlockActivity {
 			public void onClick(View v) {
 			}
 		});
-		
+
 		imgViewResultatPuntuacio.setImageResource(result.getPuntuacioPath());
-		//imgViewCalca.setBackgroundResource(result.getImgCalcesResultPath());
 		BtnMenu.setText(R.string.button_menu);
 		BtnMenu.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
 		copyPrivateRawResourceToPubliclyAccessibleFile();
-		
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(getBaseContext());
 		String cargarIdioma = sharedPref.getString("language_list_preference",
 				"");
 		if (cargarIdioma.equals("")) {
@@ -121,7 +134,7 @@ public class ResultFragment extends SherlockActivity {
 					|| current.getLanguage().equals("en")
 					|| current.getLanguage().equals("ca")) {
 				cargarIdioma = current.getLanguage();
-			}else{
+			} else {
 				cargarIdioma = "en";
 			}
 		}
@@ -131,13 +144,14 @@ public class ResultFragment extends SherlockActivity {
 		configuracion.locale = locale;
 		getBaseContext().getResources().updateConfiguration(configuracion,
 				getBaseContext().getResources().getDisplayMetrics());
-		
-		int puntuacio = (Integer) getIntent().getSerializableExtra("resultValue");
-		if(puntuacio == 2){
+
+		int puntuacio = (Integer) getIntent().getSerializableExtra(
+				"resultValue");
+		if (puntuacio == 2) {
 			imgViewCalca.setBackgroundResource(R.drawable.advance_calces);
-		}else if(puntuacio == 3){
-			imgViewCalca.setBackgroundResource(R.drawable.sexmachine_calces);	
-		}else{
+		} else if (puntuacio == 3) {
+			imgViewCalca.setBackgroundResource(R.drawable.sexmachine_calces);
+		} else {
 			imgViewCalca.setBackgroundResource(result.getImgCalcesResultPath());
 		}
 
@@ -165,6 +179,46 @@ public class ResultFragment extends SherlockActivity {
 				.getActionProvider();
 		actionProvider
 				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+		actionProvider.setShareIntent(createShareIntent());
+
+		// share();
+
+		return true;
+	}
+
+	/**
+	 * Creates a sharing {@link Intent}.
+	 * 
+	 * @return The sharing intent.
+	 */
+	private Intent createShareIntent() {
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("image/jpeg");
+		Uri uri = Uri.fromFile(getFileStreamPath(SHARED_FILE_NAME));
+		// shareIntent.putExtra(Intent.EXTRA_TEXT, label);
+		shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+		return shareIntent;
+	}
+
+	public Bitmap addTextToImageResult(int drawableId) {
+
+		Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)
+				.copy(Bitmap.Config.ARGB_8888, true);
+
+		Paint paint = new Paint();
+		paint.setStyle(Style.FILL);
+		paint.setColor(Color.BLACK);
+		paint.setTextAlign(Align.CENTER);
+		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		paint.setTypeface(new Utils(getBaseContext()).getTypeFaceFontBold());
+		paint.setTextSize(30);
+
+		Canvas canvas = new Canvas(bm);
+
+		Drawable image = getResources().getDrawable(result.getImgModelPath());
+		// Store our image size as a constant
+		final int IMAGE_WIDTH = image.getIntrinsicWidth();
+		final int IMAGE_HEIGHT = image.getIntrinsicHeight();
 
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
@@ -175,74 +229,45 @@ public class ResultFragment extends SherlockActivity {
 
 		String result = String.format(
 				getResources().getString(R.string.result_share), arg);
-		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-		shareIntent.setType("text/plain");
-		Uri uri = Uri.fromFile(getFileStreamPath(SHARED_FILE_NAME));
-		//shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-		shareIntent.putExtra(Intent.EXTRA_TEXT, result);
 		
-		actionProvider.setShareIntent(shareIntent);
+		drawMultiLineText(result, IMAGE_WIDTH / 2, IMAGE_HEIGHT/2, paint, canvas);
 		
-//		share();
-
-		return true;
+		return bm;
 	}
 	
-	/**
-	 * To share photo with text on facebook
-	 * 
-	 * @param nameApp
-	 * @param imagePath
-	 */
-	private void share() {
-		try {
-			BitmapFactory.Options o2 = new BitmapFactory.Options();
-			Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.girl1);
-			List<Intent> targetedShareIntents = new ArrayList<Intent>();
-			Intent share = new Intent(android.content.Intent.ACTION_SEND);
-			share.setType("image/*");
-			List<ResolveInfo> resInfo = getPackageManager()
-					.queryIntentActivities(share, 0);
-			if (!resInfo.isEmpty()) {
-				for (ResolveInfo info : resInfo) {
-					Intent targetedShare = new Intent(
-							android.content.Intent.ACTION_SEND);
-					targetedShare.setType("image/*"); // put here your mime type
+	private void drawMultiLineText(String str, float x, float y, Paint paint, Canvas canvas) {
+		   String[] lines = str.split("\n");
+		   float txtSize = -paint.ascent() + paint.descent();       
 
-						targetedShare.putExtra(Intent.EXTRA_SUBJECT,
-								"Sample Photo");
-						targetedShare.putExtra(Intent.EXTRA_TEXT,
-								"This photo is created by App Name");
-						targetedShare.putExtra(Intent.EXTRA_STREAM,
-								Uri.fromFile(getFileStreamPath("girl1.png")));
-						targetedShare.setPackage(info.activityInfo.packageName);
-						targetedShareIntents.add(targetedShare);
-					
-				}
-				Intent chooserIntent = Intent.createChooser(
-						targetedShareIntents.remove(0), "Select app to share");
-				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-						targetedShareIntents.toArray(new Parcelable[] {}));
-				startActivity(chooserIntent);
-			}
-		} catch (Exception e) {
-//			Log.v("VM",
-//					"Exception while sending image on" + nameApp + " "
-//							+ e.getMessage());
+		   if (paint.getStyle() == Style.FILL_AND_STROKE || paint.getStyle() == Style.STROKE){
+		      txtSize += paint.getStrokeWidth(); //add stroke width to the text size
+		   }
+		   float lineSpace = txtSize * 0.1f;  //default line spacing
+
+		   float firstTextY = y - txtSize+lineSpace;
+		   
+		   for (int i = 0; i < lines.length; ++i) {
+		      canvas.drawText(lines[i], x, firstTextY + (txtSize + lineSpace) * i, paint);
+		   }
 		}
-	}
 
-	/**
-	 * Creates a sharing {@link Intent}.
-	 * 
-	 * @return The sharing intent.
-	 */
-	private Intent createShareIntent(String label) {
-		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-		shareIntent.setType("image/jpeg");
-		Uri uri = Uri.fromFile(getFileStreamPath(SHARED_FILE_NAME));
-		shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-		return shareIntent;
+	public boolean saveImageToInternalStorage(Bitmap image) {
+
+		try {
+			// Use the compress method on the Bitmap object to write image to
+			// the OutputStream
+			FileOutputStream fos = openFileOutput(SHARED_FILE_NAME,
+					Context.MODE_WORLD_READABLE);
+
+			// Writing the bitmap to the output stream
+			image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			fos.close();
+
+			return true;
+		} catch (Exception e) {
+			Log.e("saveToInternalStorage()", e.getMessage());
+			return false;
+		}
 	}
 
 	/**
@@ -250,42 +275,14 @@ public class ResultFragment extends SherlockActivity {
 	 * that the latter can be shared with other applications.
 	 */
 	private void copyPrivateRawResourceToPubliclyAccessibleFile() {
-		InputStream inputStream = null;
-		FileOutputStream outputStream = null;
-		try {
-			inputStream = getResources().openRawResource(R.drawable.girl1);
-			outputStream = openFileOutput(SHARED_FILE_NAME,
-					Context.MODE_WORLD_READABLE | Context.MODE_APPEND);
-			byte[] buffer = new byte[1024];
-			int length = 0;
-			try {
-				while ((length = inputStream.read(buffer)) > 0) {
-					outputStream.write(buffer, 0, length);
-				}
-			} catch (IOException ioe) {
-				/* ignore */
-			}
-		} catch (FileNotFoundException fnfe) {
-			/* ignore */
-		} finally {
-			try {
-				inputStream.close();
-			} catch (IOException ioe) {
-				/* ignore */
-			}
-			try {
-				outputStream.close();
-			} catch (IOException ioe) {
-				/* ignore */
-			}
-		}
+		boolean f = saveImageToInternalStorage(addTextToImageResult(result
+				.getImgModelPath()));
 	}
 
 	@Override
 	public void onBackPressed() {
 		ResultFragment.this.finish();
-		startActivity(new Intent(getApplicationContext(),
-				MainActivity.class));	
+		startActivity(new Intent(getApplicationContext(), MainActivity.class));
 	}
 
 	private Typeface getTypeFaceFont() {
@@ -297,7 +294,7 @@ public class ResultFragment extends SherlockActivity {
 		if (item.getItemId() == android.R.id.home) {
 			ResultFragment.this.finish();
 			startActivity(new Intent(getApplicationContext(),
-					MainActivity.class));	
+					MainActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

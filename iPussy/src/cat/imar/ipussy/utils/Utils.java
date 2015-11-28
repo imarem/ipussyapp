@@ -1,7 +1,5 @@
 package cat.imar.ipussy.utils;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,6 +17,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.inputmethod.InputMethodManager;
 import cat.imar.ipussy.R;
+
+import com.actionbarsherlock.app.SherlockActivity;
 
 public class Utils {
 	
@@ -92,12 +92,17 @@ public class Utils {
 	}
 	
 	public Typeface getTypeFaceFontBold() {
-		return Typeface.createFromAsset(context.getAssets(),"fonts/avantgarde-bold.ttf"); 
+		return Typeface.createFromAsset(context.getAssets(),"fonts/Roboto-Bold.ttf"); 
 	}
 	
 	public Typeface getTypeFaceFont() {
-		return Typeface.createFromAsset(context.getAssets(),"fonts/Avantgrade.ttf"); 
+		return Typeface.createFromAsset(context.getAssets(),"fonts/Roboto-Regular.ttf"); 
 	}
+	
+	public Typeface getTypeFaceFontCookie() {
+		return Typeface.createFromAsset(context.getAssets(),"fonts/Cookie-Regular.ttf"); 
+	}
+	
 	
 	public BitmapDrawable writeTextOnDrawable(int drawableId, String text) {
 

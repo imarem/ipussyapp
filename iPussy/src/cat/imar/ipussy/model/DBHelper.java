@@ -86,7 +86,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
 	private void loadData() {
 		PussyModel pm1 = createPussyModel(1, R.string.name1,
-				R.string.descripcio1, R.drawable.girl1, R.drawable.girl1b, true);
+				R.string.descripcio1, R.drawable.girl_1, R.drawable.girl_1b, true);
 		final Integer[] detailList1 = new Integer[] { 1, 1, 1, 1, 1, 1, 2, 2,
 				2, 2, 2, 2, 3, 3, 3, 3, 3, 3 };
 		for (int i = 0; i < detailList1.length; i++) {
@@ -94,7 +94,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 		}
 
 		PussyModel pm2 = createPussyModel(2, R.string.name2,
-				R.string.descripcio2, R.drawable.girl2, R.drawable.girl2b, true);
+				R.string.descripcio2, R.drawable.girl_2, R.drawable.girl_2b, true);
 		final Integer[] detailList2 = new Integer[] { 1, 1, 1, 2, 2, 2, 2,
 				2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 		for (int i = 0; i < detailList2.length; i++) {
@@ -104,7 +104,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
 		//TODO cambiar ojos disabled
 		PussyModel pm3 = createPussyModel(3, R.string.name3,
-				R.string.descripcio3, R.drawable.girl3, R.drawable.girl3b, false);
+				R.string.descripcio3, R.drawable.girl_3, R.drawable.girl_3b, false);
 		final Integer[] detailList3 = new Integer[] { 1, 2, 2, 2, 3, 3, 3,
 				3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3 };
 		for (int i = 0; i < detailList3.length; i++) {
@@ -113,7 +113,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 		}
 
 		PussyModel pm4 = createPussyModel(4, R.string.name4,
-				R.string.descripcio4, R.drawable.girl4, R.drawable.girl4b, false);
+				R.string.descripcio4, R.drawable.girl_4, R.drawable.girl_4b, false);
 		final Integer[] detailList4 = new Integer[] { 1, 1, 3, 3, 3, 2, 2, 2,
 				2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 		for (int i = 0; i < detailList4.length; i++) {
@@ -123,7 +123,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 		}
 
 		PussyModel pm5 = createPussyModel(5, R.string.name5,
-				R.string.descripcio5, R.drawable.girl5, R.drawable.girl5b, false);
+				R.string.descripcio5, R.drawable.girl_5, R.drawable.girl_5b, false);
 		final Integer[] detailList5 = new Integer[] { 1, 1, 1, 1, 1, 1, 1, 1,
 				2, 2, 3, 3, 3, 3, 3, 2, 2, 2, 1, 1 };
 		for (int i = 0; i < detailList5.length; i++) {
@@ -224,7 +224,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 					// si es la primera o la segona xati mirem resultats anteriors per si es
 					// pot desbloquejar la 3
 					if(pussyModel.getId().equals(1)){
-						// mirem la següent aviam si s'ha
+						// mirem la segï¿½ent aviam si s'ha
 						PussyModel pussyModel2 = getPussyModelById(2);
 						if (pussyModel2.getResult() != 3) {
 							enabledNext = false;
@@ -244,7 +244,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 						id = pussyModel.getId();
 					}
 					// si no es tracta de la 1 ni la 2 sempre desbolquejem la
-					// següent si ha tret un 3 (sex machine)
+					// segï¿½ent si ha tret un 3 (sex machine)
 					PussyModel seguent = getPussyModelById(id + 1);
 					if (seguent != null && enabledNext) {
 						seguent.setEnabled(true);

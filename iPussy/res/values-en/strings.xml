@@ -29,7 +29,7 @@
 	<string name="result_sexmachine_label">SEX MACHINE</string>
 	<string name="result_sexmachine">Well done!! You are a true source of pleasure</string>
 	<string name="result_sexmachine_end">¡Ouh yes! Good masturbator, can\'t even talk </string>
-	<string name="result_share">%1$s has wanked %2$s and reached a score of %3$s</string>
+	<string name="result_share">%1$s has wanked %2$s \n and reached a score \n of %3$s</string>
 	<string name="preference">Settings</string>
     <string name="preferenceConfig">User settings</string>
     <string name="preferenceName">User Name</string>
@@ -53,6 +53,8 @@
     <string name="dialog_validate_name_message_not_vocals">What a fake... Insert your name, don\'t be afraid to :)</string>
     <string name="locked_label">LOCKED</string>
     <string name="button_menu">MENU</string>
+    <string name="button_share">SHARE</string>
+    <string name="button_resart">RESTART</string>
     <string name="button_start">START</string>
     <string name="label_game_ok">Mmm.. just like that</string>
     <string name="label_game_greater">Slower</string>

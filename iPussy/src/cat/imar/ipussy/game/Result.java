@@ -45,22 +45,22 @@ public class Result implements Serializable {
 			setResultPath(R.string.result_vaginner_label);
 			setResultDescriptionPath(R.string.result_vaginner);
 			setResultMessageLowerPath(R.string.result_vaginner_end);
-			setImgCalcesResultPath(R.drawable.calces_1);
-			setPuntuacioPath(R.drawable.puntuacio_11);
+			setImgCalcesResultPath(R.drawable.img_calces_1);
+			setPuntuacioPath(R.drawable.img_puntuacio_11);
 			break;
 		case 2:
 			setResultPath(R.string.result_advance_label);
 			setResultDescriptionPath(R.string.result_advance);
 			setResultMessageLowerPath(R.string.result_advance_end);
-			setImgCalcesResultPath(R.drawable.calces_2);
-			setPuntuacioPath(R.drawable.puntuacio_21);
+			setImgCalcesResultPath(R.drawable.img_calces_2);
+			setPuntuacioPath(R.drawable.img_puntuacio_21);
 			break;
 		case 3:
 			setResultPath(R.string.result_sexmachine_label);
 			setResultDescriptionPath(R.string.result_sexmachine);
 			setResultMessageLowerPath(R.string.result_sexmachine_end);
-			setImgCalcesResultPath(R.drawable.calces_3);
-			setPuntuacioPath(R.drawable.puntuacio_31);
+			setImgCalcesResultPath(R.drawable.img_calces_3);
+			setPuntuacioPath(R.drawable.img_puntuacio_31);
 			break;
 		default:
 			break;

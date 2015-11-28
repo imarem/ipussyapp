@@ -2,7 +2,6 @@ package cat.imar.ipussy;
 
 import java.util.Locale;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,11 +15,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import cat.imar.ipussy.utils.MyService;
 import cat.imar.ipussy.utils.Utils;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -174,6 +173,13 @@ public class SplashActivity extends SherlockActivity {
 	@Override
 	public void onBackPressed() {
 		SplashActivity.this.finish();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		stopService(new Intent(this, MyService.class));
 	}
 
 }

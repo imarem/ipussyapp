@@ -3,7 +3,7 @@
     
     <item
         android:drawable="@drawable/calces_1"
-        android:duration="600"/>
+        android:duration="700"/>
     <item
         android:drawable="@drawable/calces_2"
         android:duration="700"/>

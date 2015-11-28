@@ -166,5 +166,7 @@
 	<color name="insideGrad11">#eb9ec3</color>
 	<color name="insideGrad12">#eda8ca</color>
 	<color name="insideGrad13">#f0b2d0</color>
+	<color name="transparent">#00000000</color>
+	
 	
 </resources>

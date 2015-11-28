@@ -15,18 +15,14 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.Path.Direction;
 import android.graphics.PathDashPathEffect;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.provider.SyncStateContract.Helpers;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -56,8 +52,12 @@ public class GameActivity extends BaseActivityDataBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//		getSupportActionBar().setDisplayShowTitleEnabled(false);
+//		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		
+		getSupportActionBar().hide();
+		
 		
 		PussyModel p = (PussyModel) getIntent().getSerializableExtra("bean");
 		
@@ -182,10 +182,11 @@ public class GameActivity extends BaseActivityDataBase {
 		private Clitoris clitoris;
 		private PussyModel pussy;
 
+		//variables del goteo
 		private boolean flagGoteo = false;
-		private int velocityGoteo = 200;
+		private int velocityGoteo = 800;
 		private int widthGoteo = 6;
-		private float mPhase;
+		private float mPhase = 5;
 
 		private int ok = 0;
 		private int ko = 0;
@@ -226,6 +227,7 @@ public class GameActivity extends BaseActivityDataBase {
 			super(aContext);
 			context = (GameActivity) aContext;
 			initVariables(time, p);
+			setBackgroundResource(R.drawable.background);
 		}
 
 		private void initVariables(int time, PussyModel p) {
@@ -250,7 +252,7 @@ public class GameActivity extends BaseActivityDataBase {
 				@Override
 				public void onTick(long millisUntilFinished) {
 					if (counterHalf) {
-						// cada mitat de segon realitzem una predicció del
+						// cada mitat de segon realitzem una predicciï¿½ del
 						// resultat per a poder pintar la barra de potencia
 						prediccio();
 					} else {
@@ -286,7 +288,7 @@ public class GameActivity extends BaseActivityDataBase {
 			context.getHelper().updatePussyModelByIdAndResult(puntuacio, pussy);
 			context.finish();
 			getContext().startActivity(new Intent(getContext(),
-					ResultFragment.class).putExtra("result", result).putExtra("resultValue", puntuacio));
+					ResultFragment.class).putExtra("result", result).putExtra("resultValue", puntuacio).putExtra("bean", pussy));
 			
 		}
 
@@ -321,16 +323,16 @@ public class GameActivity extends BaseActivityDataBase {
 			// timer
 			paintTimer = new Paint();
 			paintTimer.setColor(getResources().getColor(R.color.masterColor));
-			paintTimer.setTextSize(22);
+			paintTimer.setTextSize(19);
 			paintTimer.setStyle(Style.FILL);
 			paintTimer.setTextAlign(Align.CENTER);
 			paintTimer.setFlags(Paint.ANTI_ALIAS_FLAG);
 			
 			paintHelp = new Paint();
 			paintHelp.setColor(getResources().getColor(R.color.masterColor));
-			paintHelp.setTextSize(26);
+			paintHelp.setTextSize(30);
 			paintHelp.setTextAlign(Align.CENTER);
-			paintHelp.setTypeface(new Utils(context).getTypeFaceFont());
+			paintHelp.setTypeface(new Utils(context).getTypeFaceFontCookie());
 			paintHelp.setFlags(Paint.ANTI_ALIAS_FLAG);
 			
 			paintPower = new Paint();
@@ -347,7 +349,7 @@ public class GameActivity extends BaseActivityDataBase {
 			// ouside
 			paintOuside = new Paint();
 			paintOuside.setStyle(Style.FILL);
-			paintOuside.setColor(getResources().getColor(R.color.xoxo2));
+			paintOuside.setColor(getResources().getColor(R.color.insideGrad13));
 
 			// inside
 			paintInside = new Paint();
@@ -377,11 +379,11 @@ public class GameActivity extends BaseActivityDataBase {
 			paintBarraOut.setColor(getResources().getColor(R.color.grisBarra));
 			paintBarraOut.setAntiAlias(true);
 
-			calcaDrawable = getResources().getDrawable(R.drawable.calces);
+			calcaDrawable = getResources().getDrawable(R.drawable.b_button_back_active);
 			calcaDrawable.setBounds(0, 0, calcaDrawable.getIntrinsicWidth(),
 					calcaDrawable.getIntrinsicHeight());
 
-			calcaTimerDrawable = getResources().getDrawable(R.drawable.calces);
+			calcaTimerDrawable = getResources().getDrawable(R.drawable.b_button_back_active);
 			calcaTimerDrawable.setBounds(0, 0,
 					calcaTimerDrawable.getIntrinsicWidth(),
 					calcaTimerDrawable.getIntrinsicHeight());
@@ -404,9 +406,9 @@ public class GameActivity extends BaseActivityDataBase {
 			// unitats proporcionals
 			unitatWith = width / 11;
 			unitatHeight = height / 18;
-			paintTimer.setTextSize(unitatHeight *2/3);
+			paintTimer.setTextSize(unitatHeight *1/2);
 			paintHelp.setTextSize(unitatHeight * 2/3);
-			paintPower.setTextSize(unitatHeight * 2/3);
+			paintPower.setTextSize(unitatHeight * 1/2);
 			paintPowerLevel.setTextSize(unitatHeight * 1/3);
 			
 			if(flagInitMove){
@@ -418,8 +420,8 @@ public class GameActivity extends BaseActivityDataBase {
 				flagInitMove = false;
 			}
 			
-			canvas.drawColor(getResources().getColor(R.color.xoxoBackground));
-			
+			Drawable d = getResources().getDrawable(R.drawable.background);
+			d.draw(canvas);
 			// metode que pinta el contador
 			drawTimeCounter(canvas);
 			// metode que pinta la sequencia ideal
@@ -511,7 +513,7 @@ public class GameActivity extends BaseActivityDataBase {
 			float size = (width - unitatWith * 2)
 					/ (pussy.getDetallPussyModelList().size());
 
-			// colors interns en funció de la moel.
+			// colors interns en funciï¿½ de la moel.
 			offset = 0;
 			for (int i = 0; i < pussy.getDetallPussyModelList().size(); i++) {
 				DetailPussyModel detail = pussy.getDetallPussyModelList()
@@ -528,8 +530,11 @@ public class GameActivity extends BaseActivityDataBase {
 				}
 				float left = (i * size) + unitatWith;
 				float right = (i * size) + size + unitatWith - offset;
-				float top = unitatHeight;// + unitatHeight / 8;
-				float bottom = unitatHeight  + (unitatHeight / 2) -2;// - unitatHeight / 8;
+				
+//				float top = unitatHeight;// + unitatHeight / 8;
+//				float bottom = unitatHeight  + (unitatHeight / 2) -2;// - unitatHeight / 8;
+				float top = (float) (unitatHeight *1.6);
+				float bottom = (float) ((unitatHeight * 1.9) -2);
 				rect.set(left, top, right, bottom);
 				Paint paint = new Paint();
 				if (detail.getMode() == 1) {
@@ -544,7 +549,7 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Mètode que dibuixa la sequencia de velocitats realitzada per
+		 * Mï¿½tode que dibuixa la sequencia de velocitats realitzada per
 		 * l'usuari-
 		 * 
 		 * @param canvas
@@ -557,8 +562,11 @@ public class GameActivity extends BaseActivityDataBase {
 				RectF rect = new RectF();
 				float left = (i * size) + unitatWith + offsetUser;
 				float right = (i * size) + size + unitatWith ;
-				float top = unitatHeight + (unitatHeight / 2);
-				float bottom = unitatHeight * 2 -2;
+//				float top = unitatHeight + (unitatHeight / 2);
+//				float bottom = unitatHeight * 2 -2;
+				
+				float top = (float) (unitatHeight *1.1);
+				float bottom = (float) ((unitatHeight  *1.4) -2);
 				rect.set(left, top, right, bottom);
 				Paint paintUserSequence = new Paint();
 				if (mPts.get(i) == 1) {
@@ -572,7 +580,7 @@ public class GameActivity extends BaseActivityDataBase {
 							R.color.masterColor));
 				}else{
 					paintUserSequence.setColor(getResources().getColor(
-							R.color.xoxoBackground));
+							R.color.transparent));
 				}
 				canvas.drawRect(rect, paintUserSequence);
 			}
@@ -599,18 +607,18 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Mètode que pinta la zona interna, el moviment amb dos dits i el
+		 * Mï¿½tode que pinta la zona interna, el moviment amb dos dits i el
 		 * goteix.
 		 * 
 		 * @param canvas
 		 *            el canvas
 		 * @param regionVulva
 		 *            la regio exterior (limit d'obertura)
-		 * @return la regió interior.
+		 * @return la regiï¿½ interior.
 		 */
 		private Region drawInsideZone(Canvas canvas, Region regionVulva) {
 			// XOX INTERIOR
-			// creem xox interior en funció de les coordenandes dels dit dret i
+			// creem xox interior en funciï¿½ de les coordenandes dels dit dret i
 			// esquerra.
 			Path pathXox = null;
 			if (coordDitDret > 0 && coordDitEsquerra > 0) {
@@ -626,9 +634,9 @@ public class GameActivity extends BaseActivityDataBase {
 
 				pathXox = drawPoly(canvas, paintInside, new Point[] {
 						new Point(widthleft, mitadH),
-						new Point(mitadW, unitatHeight * 3),
+						new Point(mitadW, unitatHeight * 4),
 						new Point(widhtRight, mitadH),
-						new Point(mitadW, height - unitatHeight * 3) });
+						new Point(mitadW, height - unitatHeight * 4) });
 
 				if (flagGoteo) {
 
@@ -636,17 +644,18 @@ public class GameActivity extends BaseActivityDataBase {
 					paintGoteo.setPathEffect(new PathDashPathEffect(
 							makePathGota(), velocityGoteo, mPhase,
 							PathDashPathEffect.Style.TRANSLATE));
-					mPhase += 1;
+					mPhase += 5;
+					Log.i("mpha", String.valueOf(mPhase));
 					canvas.drawPath(Utils.createPath(new Point[] {
-							new Point(mitadW, height - unitatHeight * 3),
+							new Point(mitadW, height - unitatHeight * 4),
 							new Point(widhtRight, mitadH),
-							new Point(mitadW, unitatHeight * 3) }, false),
+							new Point(mitadW, unitatHeight * 4) }, false),
 							paintGoteo);
 
 					canvas.drawPath(Utils.createPath(new Point[] {
-							new Point(mitadW, height - unitatHeight * 3),
+							new Point(mitadW, height - unitatHeight * 4),
 							new Point(widthleft, mitadH),
-							new Point(mitadW, unitatHeight * 3), }, false),
+							new Point(mitadW, unitatHeight * 4), }, false),
 							paintGoteo);
 				}
 			} else {
@@ -657,9 +666,9 @@ public class GameActivity extends BaseActivityDataBase {
 
 				pathXox = drawPoly(canvas, paintInside, new Point[] {
 						new Point(unitatWith * 3, mitadH),
-						new Point(mitadW, unitatHeight * 3),
+						new Point(mitadW, unitatHeight * 4),
 						new Point(width - unitatWith * 3, mitadH),
-						new Point(mitadW, height - unitatHeight * 3) });
+						new Point(mitadW, height - unitatHeight * 4) });
 				
 				if (flagGoteo) {
 
@@ -667,18 +676,31 @@ public class GameActivity extends BaseActivityDataBase {
 					paintGoteo.setPathEffect(new PathDashPathEffect(
 							makePathGota(), velocityGoteo, mPhase,
 							PathDashPathEffect.Style.TRANSLATE));
-					mPhase += 1;
+					paintGoteo.setPathEffect(new PathDashPathEffect(
+							makePathGota(), velocityGoteo, mPhase,
+							PathDashPathEffect.Style.TRANSLATE));
+					mPhase += 5;
+					//pinta el movimnt de l'esquerra
+					// >
 					canvas.drawPath(Utils.createPath(new Point[] {
-							new Point(mitadW, height - unitatHeight * 3),
+							//punt inferior
+							new Point(mitadW, height - unitatHeight * 4),
+							//punt mig esquerra
 							new Point(width - unitatWith * 3, mitadH),
-							new Point(mitadW, unitatHeight * 3) }, false),
+							//punt superior
+							new Point(mitadW, unitatHeight * 4) }, false),
 							paintGoteo);
-
+					//pinta el moviment de la dreta
 					canvas.drawPath(Utils.createPath(new Point[] {
-							new Point(mitadW, height - unitatHeight * 3),
+							//punt inferior
+							new Point(mitadW, height - unitatHeight * 4),
+							//punt mig dreta
 							new Point(unitatWith * 3, mitadH),
-							new Point(mitadW, unitatHeight * 3), }, false),
+							//punt superior
+							new Point(mitadW, unitatHeight * 4), }, false),
 							paintGoteo);
+					
+					
 				}
 				
 			}
@@ -686,24 +708,30 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Mètode que crea una gota.
+		 * Mï¿½tode que crea una gota.
 		 * 
 		 * @return el path.
 		 */
 		private Path makePathGota() {
 			Path p = new Path();
+			//definim rectange
 			RectF rectGota = new RectF(0, 0, 0 + unitatHeight / 3,
 					0 + unitatHeight / 2);
-			p.addArc(rectGota, 0, 180);
+			//creem un arc dins el rectange, i se li aplica 180Âº
+			//p.addArc(rectGota, 0, 180);
+			
 			p.moveTo(rectGota.left, rectGota.top + rectGota.height() / 2);
 			p.lineTo(rectGota.left, rectGota.top + rectGota.height() / 2);
 			p.lineTo(rectGota.left + rectGota.width() / 2, rectGota.top);
 			p.lineTo(rectGota.right, rectGota.top + rectGota.height() / 2);
+			p.lineTo(rectGota.left, rectGota.bottom + rectGota.height() / 2);
+			p.lineTo(rectGota.left + rectGota.width() / 2, rectGota.bottom);
+			p.lineTo(rectGota.right, rectGota.bottom + rectGota.height() / 2);
 			return p;
 		}
 
 		/**
-		 * Mètode que dibuixa la zona de fora.
+		 * Mï¿½tode que dibuixa la zona de fora.
 		 * 
 		 * @param canvas
 		 *            el canvas.
@@ -713,16 +741,16 @@ public class GameActivity extends BaseActivityDataBase {
 			// ZONA EXTERIOR creem quadrat exterior (Vulva)
 			Path pathVulva = drawPoly(canvas, paintOuside, new Point[] {
 					new Point(unitatWith, mitadH),
-					new Point(mitadW, unitatHeight * 3),
+					new Point(mitadW, unitatHeight * 4),
 					new Point(width - unitatWith, mitadH),
-					new Point(mitadW, height - unitatHeight * 3) });
+					new Point(mitadW, height - unitatHeight * 4) });
 
-			// creem regió per al path per a limitar la obertura del pussy
+			// creem regiï¿½ per al path per a limitar la obertura del pussy
 			return Utils.createRegionByPath(pathVulva);
 		}
 
 		/**
-		 * Mètode que crea i limita la regio de vibració
+		 * Mï¿½tode que crea i limita la regio de vibraciï¿½
 		 * 
 		 * @param canvas
 		 *            el canvas.
@@ -848,7 +876,7 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Mètode que a partir d'un coordenanda permet actvar el joc si toques
+		 * Mï¿½tode que a partir d'un coordenanda permet actvar el joc si toques
 		 * el clitoris.
 		 * 
 		 * @param x
@@ -864,13 +892,13 @@ public class GameActivity extends BaseActivityDataBase {
 				countDownTimer.start();
 				flagInit = false;
 
-				// primer moviment de calça temps
+				// primer moviment de calï¿½a temps
 				makeCalcaTimerAnimation(1, 2);
 			}
 		}
 
 		/**
-		 * Mètode que inicialitza l'objecte velocity traker.
+		 * Mï¿½tode que inicialitza l'objecte velocity traker.
 		 * 
 		 * @param event
 		 *            l'event touch.
@@ -889,7 +917,7 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Mètode on s'avalua la velocitat (pixels/segon) i es realitza el
+		 * Mï¿½tode on s'avalua la velocitat (pixels/segon) i es realitza el
 		 * comptatge. Es suma la velocitat en un periode de un segon, i es
 		 * reinicia un cop ha passat.
 		 * 
@@ -930,7 +958,7 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Mètode que permet evaluar la velocitat de l'usuari durant cada segon,
+		 * Mï¿½tode que permet evaluar la velocitat de l'usuari durant cada segon,
 		 * i reinici el contador de velocitats.
 		 */
 		private void evaluateCanvis() {
@@ -963,7 +991,7 @@ public class GameActivity extends BaseActivityDataBase {
 				inici = (float) (((unitatWith * 3) / 8) * 1);
 				fi = (float) (((unitatWith * 3) / 8) * 1);
 			}
-
+			
 			makeCalcaBarraAnimation(inici, fi);
 
 		}
@@ -993,7 +1021,7 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Métode que crea i mou la calça dins la barra de potencia.
+		 * Mï¿½tode que crea i mou la calï¿½a dins la barra de potencia.
 		 * 
 		 * @param inici
 		 *            l'inici.
@@ -1017,7 +1045,7 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Métode que crea i mou la calça a la barra de temps.
+		 * Mï¿½tode que crea i mou la calï¿½a a la barra de temps.
 		 * 
 		 * @param xFromDelta
 		 *            l'inici.
@@ -1043,7 +1071,7 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		/**
-		 * Mètode que compara la velocitat esperada, amb la del usuari i permet
+		 * Mï¿½tode que compara la velocitat esperada, amb la del usuari i permet
 		 * evaluar.
 		 */
 		private void puntation() {
@@ -1072,7 +1100,7 @@ public class GameActivity extends BaseActivityDataBase {
 				widthGoteo = 12;
 			} else if (valorFinal >= 70) {
 				widthGoteo = 8;
-				velocityGoteo = 100;
+				velocityGoteo = 400;
 			} else if (valorFinal >= 50) {
 				clitoris.setFlagAnimate(true);
 				flagGoteo = true;
@@ -1101,4 +1129,6 @@ public class GameActivity extends BaseActivityDataBase {
 			GameActivity.v.vibrate(duration);
 		}
 	}
+	
+	
 }

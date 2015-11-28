@@ -26,6 +26,8 @@ import cat.imar.ipussy.utils.Utils;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class ConfirmStartFragment extends SherlockActivity {
 
@@ -43,7 +45,7 @@ public class ConfirmStartFragment extends SherlockActivity {
 
 		btnStart = (Button) findViewById(R.id.btnConfirmStart);
 		txtName = (TextView) findViewById(R.id.txtNameConfirm);
-		txtName.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
+		txtName.setTypeface(new Utils(getBaseContext()).getTypeFaceFontCookie());
 		txtDesc = (TextView) findViewById(R.id.txtDescConfirm);
 		txtDesc.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
 		txtDetail = (TextView) findViewById(R.id.txtDetailConfirm);
@@ -52,6 +54,10 @@ public class ConfirmStartFragment extends SherlockActivity {
 		txtLabelConfirm.setTypeface(new Utils(getBaseContext())
 				.getTypeFaceFont());
 		imgSelectedConfrim = (ImageView) findViewById(R.id.imgSelectedConfrim);
+		
+		AdView adView = (AdView) this.findViewById(R.id.adViewConfirm);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
 
 	}
 

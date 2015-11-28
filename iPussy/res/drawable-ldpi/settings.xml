@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true"
-          android:drawable="@drawable/button_settings" /> <!-- pressed -->
-    <item android:drawable="@drawable/button_settings_active" /> <!-- default -->
+          android:drawable="@drawable/b_button_settings_active" /> <!-- pressed -->
+    <item android:drawable="@drawable/b_button_settings" /> <!-- default -->
 </selector>

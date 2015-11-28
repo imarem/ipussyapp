@@ -29,7 +29,7 @@
 	<string name="result_sexmachine_label">SEX MACHINE</string>
 	<string name="result_sexmachine">Ben fet!! Ets un autèntic aplicador de plaer</string>
 	<string name="result_sexmachine_end">Ouh yes! A bon masturbador, sobren les paraules</string>
-	<string name="result_share">%1$s ha masturbat a la %2$s i ha obtingut una puntuació de %3$s</string>
+	<string name="result_share">%1$s ha masturbat a la %2$s \n i ha obtingut una puntuació \n de %3$s</string>
 	<string name="preference">Preferències</string>
     <string name="preferenceConfig">Configuració d\'usuari</string>
     <string name="preferenceName">Nom de usuari</string>
@@ -52,7 +52,9 @@
     <string name="dialog_validate_name_message_short">Oi! Quin nom més curt... Introdueix el teu nom si us plau, no tinguis por :)</string>
     <string name="dialog_validate_name_message_not_vocals">No intentis prendre\'m el pèl... Introdueix el teu nom si us plau, no tinguis por :)</string>
     <string name="button_start">COMENÇAR</string>
-    <string name="button_menu">MENÚ</string>
+    <string name="button_menu">MENU</string>
+    <string name="button_share">SHARE</string>
+    <string name="button_resart">RESTART</string>
     <string name="locked_label">BLOQUEJADA</string>
     <string name="label_game_ok">Mmm.. Segueix així xato</string>
     <string name="label_game_greater">Más suau papi</string>

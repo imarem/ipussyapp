@@ -8,11 +8,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-
-import cat.imar.ipussy.model.PussyModel;
+import android.preference.PreferenceManager;
+import cat.imar.ipussy.utils.MyService;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -56,12 +55,13 @@ public class Preferences extends SherlockPreferenceActivity {
 				.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 					public boolean onPreferenceClick(Preference preference) {
 						if (((CheckBoxPreference) preference).isChecked()) {
-
+							playMusic();
 						} else {
-							
+							stopMusic();
 						}
 						return true;
 					}
+					
 				});
 		getPreferenceManager().findPreference("language_list_preference")
 				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -77,6 +77,15 @@ public class Preferences extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
+	}
+	
+	private void stopMusic() {
+		stopService(new Intent(this, MyService.class));
+	}
+	
+
+	private void playMusic() {
+		startService(new Intent(this, MyService.class));
 	}
 
 	@Override
@@ -114,4 +123,6 @@ public class Preferences extends SherlockPreferenceActivity {
 		}
 			
 	}
+	
+	
 }

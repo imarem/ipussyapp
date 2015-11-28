@@ -1,23 +1,13 @@
 package cat.imar.ipussy;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -26,13 +16,10 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -40,13 +27,17 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cat.imar.ipussy.game.GameActivity;
 import cat.imar.ipussy.game.Result;
+import cat.imar.ipussy.model.PussyModel;
 import cat.imar.ipussy.utils.Utils;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class ResultFragment extends SherlockActivity {
 
@@ -60,6 +51,8 @@ public class ResultFragment extends SherlockActivity {
 	private ImageView imgViewResultatPuntuacio;
 	private ImageView imgViewCalca;
 	private Button BtnMenu;
+	private Button BtnShare;
+	private Button BtnRestart;
 	private Result result = null;
 
 	@Override
@@ -70,7 +63,7 @@ public class ResultFragment extends SherlockActivity {
 		imgViewResultat = (ImageView) findViewById(R.id.imgViewModel);
 		imgViewResultatPuntuacio = (ImageView) findViewById(R.id.imgViewModel_puntuacio);
 		txtNameResult = (TextView) findViewById(R.id.txtNameResult);
-		txtNameResult.setTypeface(getTypeFaceFont());
+		txtNameResult.setTypeface(getTypeFaceFontCookie());
 		txtDescResult = (TextView) findViewById(R.id.txtDescResult);
 		txtDescResult.setTypeface(getTypeFaceFont());
 		txtLabelResult = (TextView) findViewById(R.id.txtLabelResult);
@@ -79,7 +72,7 @@ public class ResultFragment extends SherlockActivity {
 		txtLabelResultFinal.setTypeface(getTypeFaceFont());
 		imgViewCalca = (ImageView) findViewById(R.id.imgViewCalca);
 		txtLabelResultEnd = (TextView) findViewById(R.id.txtLabelResultEnd);
-		txtLabelResultEnd.setTypeface(getTypeFaceFont());
+		txtLabelResultEnd.setTypeface(getTypeFaceFontCookie());
 
 		BtnMenu = (Button) findViewById(R.id.btnMenu);
 		BtnMenu.setOnClickListener(new OnClickListener() {
@@ -91,6 +84,38 @@ public class ResultFragment extends SherlockActivity {
 						MainActivity.class));
 			}
 		});
+		
+		BtnShare = (Button) findViewById(R.id.btnShare);
+		BtnShare.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(Intent.createChooser(createShareIntent(), "Share via"));
+			}
+		});
+
+		BtnRestart = (Button) findViewById(R.id.btnRestart);
+		BtnRestart.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ResultFragment.this.finish();
+				final Intent intent = new Intent(getBaseContext(),
+						GameActivity.class).putExtra(
+						"bean",
+						(PussyModel) getIntent().getSerializableExtra(
+								"bean"));
+				startActivity(intent);
+			}
+		});
+
+		
+		
+
+		AdView adView = (AdView) this.findViewById(R.id.adViewResult);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
+
 	}
 
 	@Override
@@ -101,7 +126,7 @@ public class ResultFragment extends SherlockActivity {
 		// es recupera el resultat via itntent.
 		result = (Result) getIntent().getSerializableExtra("result");
 		// Es recuperen els valors, noms, imatge del objecet result que
-		// conté el bean amb el model.
+		// contï¿½ el bean amb el model.
 		txtNameResult.setText(result.getNameModelPath());
 		txtDescResult.setText(result.getResultDescriptionPath());
 		txtLabelResultFinal.setText(result.getResultPath());
@@ -122,6 +147,11 @@ public class ResultFragment extends SherlockActivity {
 		imgViewResultatPuntuacio.setImageResource(result.getPuntuacioPath());
 		BtnMenu.setText(R.string.button_menu);
 		BtnMenu.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
+		BtnShare.setText(R.string.button_share);
+		BtnShare.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
+		BtnRestart.setText(R.string.button_resart);
+		BtnRestart.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
+
 		copyPrivateRawResourceToPubliclyAccessibleFile();
 
 		SharedPreferences sharedPref = PreferenceManager
@@ -177,8 +207,9 @@ public class ResultFragment extends SherlockActivity {
 				.findItem(R.id.menu_item_share_action_provider_action_bar);
 		ShareActionProvider actionProvider = (ShareActionProvider) actionItem
 				.getActionProvider();
-		actionProvider
-				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+		actionProvider.setShareHistoryFileName(null);
+		//actionProvider
+		//		.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
 		actionProvider.setShareIntent(createShareIntent());
 
 		// share();
@@ -200,7 +231,7 @@ public class ResultFragment extends SherlockActivity {
 		return shareIntent;
 	}
 
-	public Bitmap addTextToImageResult(int drawableId) {
+	private Bitmap addTextToImageResult(int drawableId) {
 
 		Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)
 				.copy(Bitmap.Config.ARGB_8888, true);
@@ -227,29 +258,33 @@ public class ResultFragment extends SherlockActivity {
 				getResources().getString(result.getNameModelPath()),
 				getResources().getString(result.getResultPath()) };
 
-		String result = String.format(
-				getResources().getString(R.string.result_share), arg);
-		
-		drawMultiLineText(result, IMAGE_WIDTH / 2, IMAGE_HEIGHT/2, paint, canvas);
-		
+		String result = String.format(getResources().getString(R.string.result_share), arg);
+
+		drawMultiLineText(result, IMAGE_WIDTH / 2, IMAGE_HEIGHT / 2, paint,
+				canvas);
+
 		return bm;
 	}
-	
-	private void drawMultiLineText(String str, float x, float y, Paint paint, Canvas canvas) {
-		   String[] lines = str.split("\n");
-		   float txtSize = -paint.ascent() + paint.descent();       
 
-		   if (paint.getStyle() == Style.FILL_AND_STROKE || paint.getStyle() == Style.STROKE){
-		      txtSize += paint.getStrokeWidth(); //add stroke width to the text size
-		   }
-		   float lineSpace = txtSize * 0.1f;  //default line spacing
+	private void drawMultiLineText(String str, float x, float y, Paint paint,
+			Canvas canvas) {
+		String[] lines = str.split("\n");
+		float txtSize = -paint.ascent() + paint.descent();
 
-		   float firstTextY = y - txtSize+lineSpace;
-		   
-		   for (int i = 0; i < lines.length; ++i) {
-		      canvas.drawText(lines[i], x, firstTextY + (txtSize + lineSpace) * i, paint);
-		   }
+		if (paint.getStyle() == Style.FILL_AND_STROKE
+				|| paint.getStyle() == Style.STROKE) {
+			txtSize += paint.getStrokeWidth(); // add stroke width to the text
+												// size
 		}
+		float lineSpace = txtSize * 0.1f; // default line spacing
+
+		float firstTextY = y - txtSize + lineSpace;
+
+		for (int i = 0; i < lines.length; ++i) {
+			canvas.drawText(lines[i], x,
+					firstTextY + (txtSize + lineSpace) * i, paint);
+		}
+	}
 
 	public boolean saveImageToInternalStorage(Bitmap image) {
 
@@ -287,6 +322,10 @@ public class ResultFragment extends SherlockActivity {
 
 	private Typeface getTypeFaceFont() {
 		return new Utils(getBaseContext()).getTypeFaceFont();
+	}
+	
+	private Typeface getTypeFaceFontCookie() {
+		return new Utils(getBaseContext()).getTypeFaceFontCookie();
 	}
 
 	@Override

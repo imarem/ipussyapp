@@ -33,7 +33,7 @@ public class ConfirmStartFragment extends SherlockActivity {
 
 	private Button btnStart;
 	private ImageView imgSelectedConfrim;
-	private TextView txtName, txtDesc, txtDetail, txtLabelConfirm;
+	private TextView txtName, txtDesc, txtLabelConfirm;
 	private ImageView imgHow;
 	private Button btnNext, btnBack;
 	private Integer counterHow = 0;
@@ -48,8 +48,6 @@ public class ConfirmStartFragment extends SherlockActivity {
 		txtName.setTypeface(new Utils(getBaseContext()).getTypeFaceFontCookie());
 		txtDesc = (TextView) findViewById(R.id.txtDescConfirm);
 		txtDesc.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
-		txtDetail = (TextView) findViewById(R.id.txtDetailConfirm);
-		txtDetail.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
 		txtLabelConfirm = (TextView) findViewById(R.id.txtLabelConfirm);
 		txtLabelConfirm.setTypeface(new Utils(getBaseContext())
 				.getTypeFaceFont());
@@ -205,7 +203,6 @@ public class ConfirmStartFragment extends SherlockActivity {
 
 		txtName.setText(model.getName());
 		txtDesc.setText(model.getDescription());
-		txtDetail.setText(model.getDetallPussyModelList().size() + "seg.");
 		txtLabelConfirm.setText(R.string.select_label);
 
 		SharedPreferences sharedPref = PreferenceManager

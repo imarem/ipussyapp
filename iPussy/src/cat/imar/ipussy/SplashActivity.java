@@ -17,6 +17,7 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import cat.imar.ipussy.utils.MyService;
@@ -28,6 +29,9 @@ public class SplashActivity extends SherlockActivity {
 
 	private EditText editTextName;
 	private Button btnPlay;
+	private ImageView imgAudio;
+	private Button btnRmvAds;
+	private SharedPreferences sharedPref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,7 @@ public class SplashActivity extends SherlockActivity {
 		getSupportActionBar().hide();
 		setContentView(R.layout.splash_activity);
 		editTextName = (EditText) findViewById(R.id.edittext_name);
-
+		imgAudio = (ImageView) findViewById(R.id.btnAudio);
 		editTextName.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
 		editTextName.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -50,7 +54,6 @@ public class SplashActivity extends SherlockActivity {
 				return handled;
 			}
 		});
-		
 
 		btnPlay = (Button) findViewById(R.id.btnPlay);
 		btnPlay.setOnClickListener(new OnClickListener() {
@@ -60,10 +63,63 @@ public class SplashActivity extends SherlockActivity {
 				startGame(editTextName.getText().toString());
 			}
 		});
+
+		btnRmvAds = (Button) findViewById(R.id.btnRmvAds);
+		btnRmvAds.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
-	
-	
-	private boolean startGame(String strUserName){
+
+	private void configureAudio() {
+		sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(getBaseContext());
+		Boolean show = sharedPref.getBoolean(
+				"volumen_prefernce", true);
+		if (show) {
+			startService(new Intent(this, MyService.class));	
+			imgAudio.setImageResource(R.drawable.audio_on);
+		}else{
+			imgAudio.setImageResource(R.drawable.audio_off);
+		}
+		
+		imgAudio.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Boolean isOn = sharedPref.getBoolean("volumen_prefernce", true);
+				if (isOn) {
+					imgAudio.setImageResource(R.drawable.audio_off);
+					stopMusic();
+					SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+					SharedPreferences.Editor editor = preferences.edit();
+					editor.putBoolean("volumen_prefernce", false);
+					editor.commit();
+				} else {
+					imgAudio.setImageResource(R.drawable.audio_on);
+					playMusic();
+					SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+					SharedPreferences.Editor editor = preferences.edit();
+					editor.putBoolean("volumen_prefernce", true);
+					editor.commit();
+				}
+			}
+		});
+		
+	}
+
+	private void stopMusic() {
+		stopService(new Intent(this, MyService.class));
+	}
+
+	private void playMusic() {
+		startService(new Intent(this, MyService.class));
+	}
+
+	private boolean startGame(String strUserName) {
 		boolean valid = false;
 		if (!strUserName.equals("")) {
 			int message = 0;
@@ -87,18 +143,14 @@ public class SplashActivity extends SherlockActivity {
 				SharedPreferences.Editor editor = sharedPref.edit();
 				editor.putString("username_preference", strUserName);
 				editor.commit();
-				startActivity(new Intent(getBaseContext(),
-						MainActivity.class));
+				startActivity(new Intent(getBaseContext(), MainActivity.class));
 			} else {
 				new AlertDialog.Builder(SplashActivity.this)
-						.setTitle(
-								R.string.dialog_validate_name_title)
+						.setTitle(R.string.dialog_validate_name_title)
 						.setMessage(message)
-						.setPositiveButton(
-								"Ok",
+						.setPositiveButton("Ok",
 								new DialogInterface.OnClickListener() {
-									public void onClick(
-											DialogInterface dialog,
+									public void onClick(DialogInterface dialog,
 											int which) {
 
 									}
@@ -114,8 +166,7 @@ public class SplashActivity extends SherlockActivity {
 					.setMessage(message)
 					.setPositiveButton("Ok",
 							new DialogInterface.OnClickListener() {
-								public void onClick(
-										DialogInterface dialog,
+								public void onClick(DialogInterface dialog,
 										int which) {
 
 								}
@@ -123,8 +174,6 @@ public class SplashActivity extends SherlockActivity {
 		}
 		return valid;
 	}
-	
-	
 
 	@Override
 	protected void onStart() {
@@ -134,19 +183,22 @@ public class SplashActivity extends SherlockActivity {
 				.getDefaultSharedPreferences(getBaseContext());
 		String userName = sharedPref.getString("username_preference", "");
 		editTextName.setText(userName);
-		
+
 		btnPlay.setText(R.string.BtnPlay);
 		btnPlay.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
 
-		findViewById(android.R.id.content).setOnTouchListener(new OnTouchListener() {
-		    @Override
-		    public boolean onTouch(View v, MotionEvent event) {
-		        Utils.hideSoftKeyboard(SplashActivity.this);
-		        return false;
-		    }
-		});	
-		
-		
+		btnRmvAds.setText(R.string.BtnRmsAds);
+		btnRmvAds.setTypeface(new Utils(getBaseContext()).getTypeFaceFont());
+
+		findViewById(android.R.id.content).setOnTouchListener(
+				new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						Utils.hideSoftKeyboard(SplashActivity.this);
+						return false;
+					}
+				});
+
 		String cargarIdioma = sharedPref.getString("language_list_preference",
 				"");
 		if (cargarIdioma.equals("")) {
@@ -155,7 +207,7 @@ public class SplashActivity extends SherlockActivity {
 					|| current.getLanguage().equals("en")
 					|| current.getLanguage().equals("ca")) {
 				cargarIdioma = current.getLanguage();
-			}else{
+			} else {
 				cargarIdioma = "en";
 			}
 		}
@@ -166,20 +218,19 @@ public class SplashActivity extends SherlockActivity {
 		getBaseContext().getResources().updateConfiguration(configuracion,
 				getBaseContext().getResources().getDisplayMetrics());
 
-	}
-	
+		configureAudio();
 
-	
+	}
+
 	@Override
 	public void onBackPressed() {
 		SplashActivity.this.finish();
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		stopService(new Intent(this, MyService.class));
 	}
-
 }

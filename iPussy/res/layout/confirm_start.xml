@@ -45,18 +45,6 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/txtDetailConfirm"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15sp"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/masterColor"
-        android:textIsSelectable="false"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/txtLabelConfirm"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

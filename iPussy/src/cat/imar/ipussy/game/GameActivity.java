@@ -24,7 +24,6 @@ import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.view.VelocityTrackerCompat;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -45,7 +44,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class GameActivity extends BaseActivityDataBase {
 
-	public static Vibrator v = null;
+	public static Vibrator vibration = null;
 	public SampleView sampleView;
 	private DBHelper mDBHelper = null;
 	
@@ -94,15 +93,11 @@ public class GameActivity extends BaseActivityDataBase {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		Boolean activeVibrator = sharedPref.getBoolean("vibrate_prefernce", true);
 		if(activeVibrator){
-			v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);	
+			vibration = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);	
 		}else{
-			v = null;
+			vibration = null;
 		}
-		
-//		MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.combo);
-//		mp.start();
-		
-		
+
 		String cargarIdioma = sharedPref.getString("language_list_preference","");
 		if (cargarIdioma.equals("")) {
 			Locale current = getResources().getConfiguration().locale;
@@ -418,6 +413,8 @@ public class GameActivity extends BaseActivityDataBase {
 				clitoris.setRadi(unitatRadi * 3/2);
 				clitoris.setRadiMax(unitatRadi * 2);
 				flagInitMove = false;
+				makeCalcaBarraAnimation((((unitatWith * 3) / 8) * 1), (((unitatWith * 3) / 8) * 1));
+				makeCalcaTimerAnimation(1, 1);
 			}
 			
 			Drawable d = getResources().getDrawable(R.drawable.background);
@@ -432,7 +429,6 @@ public class GameActivity extends BaseActivityDataBase {
 
 			drawTextHelper(canvas);
 			drawTextPowerBar(canvas);
-
 
 			// metode que dibuixa la part exterior
 			Region regionVulva = drawOutsideZone(canvas);
@@ -645,7 +641,6 @@ public class GameActivity extends BaseActivityDataBase {
 							makePathGota(), velocityGoteo, mPhase,
 							PathDashPathEffect.Style.TRANSLATE));
 					mPhase += 5;
-					Log.i("mpha", String.valueOf(mPhase));
 					canvas.drawPath(Utils.createPath(new Point[] {
 							new Point(mitadW, height - unitatHeight * 4),
 							new Point(widhtRight, mitadH),
@@ -676,9 +671,6 @@ public class GameActivity extends BaseActivityDataBase {
 					paintGoteo.setPathEffect(new PathDashPathEffect(
 							makePathGota(), velocityGoteo, mPhase,
 							PathDashPathEffect.Style.TRANSLATE));
-					paintGoteo.setPathEffect(new PathDashPathEffect(
-							makePathGota(), velocityGoteo, mPhase,
-							PathDashPathEffect.Style.TRANSLATE));
 					mPhase += 5;
 					//pinta el movimnt de l'esquerra
 					// >
@@ -686,7 +678,8 @@ public class GameActivity extends BaseActivityDataBase {
 							//punt inferior
 							new Point(mitadW, height - unitatHeight * 4),
 							//punt mig esquerra
-							new Point(width - unitatWith * 3, mitadH),
+							new Point(width - unitatWith * 3, 
+									mitadH),
 							//punt superior
 							new Point(mitadW, unitatHeight * 4) }, false),
 							paintGoteo);
@@ -699,8 +692,6 @@ public class GameActivity extends BaseActivityDataBase {
 							//punt superior
 							new Point(mitadW, unitatHeight * 4), }, false),
 							paintGoteo);
-					
-					
 				}
 				
 			}
@@ -715,12 +706,12 @@ public class GameActivity extends BaseActivityDataBase {
 		private Path makePathGota() {
 			Path p = new Path();
 			//definim rectange
-			RectF rectGota = new RectF(0, 0, 0 + unitatHeight / 3,
+			RectF rectGota = new RectF(0, 0,unitatHeight / 3,
 					0 + unitatHeight / 2);
 			//creem un arc dins el rectange, i se li aplica 180º
 			//p.addArc(rectGota, 0, 180);
-			
-			p.moveTo(rectGota.left, rectGota.top + rectGota.height() / 2);
+					    
+			p.moveTo(rectGota.left, rectGota.height() / 2);
 			p.lineTo(rectGota.left, rectGota.top + rectGota.height() / 2);
 			p.lineTo(rectGota.left + rectGota.width() / 2, rectGota.top);
 			p.lineTo(rectGota.right, rectGota.top + rectGota.height() / 2);
@@ -931,9 +922,6 @@ public class GameActivity extends BaseActivityDataBase {
 			// recuperem la velocitat en l'eix y
 			vy = VelocityTrackerCompat
 					.getYVelocity(mVelocityTracker, pointerId);
-			// recuperem la velocitat en l'eix x
-			// vx = VelocityTrackerCompat.getXVelocity(mVelocityTracker,
-			// pointerId);
 
 			if (vibrateRegion.contains((int) event.getX(), (int) event.getY())) {
 				//virate(100);
@@ -1125,8 +1113,8 @@ public class GameActivity extends BaseActivityDataBase {
 		}
 
 		private void virate(final int duration) {
-			if(GameActivity.v != null)
-			GameActivity.v.vibrate(duration);
+			if(GameActivity.vibration != null)
+			GameActivity.vibration.vibrate(duration);
 		}
 	}
 	

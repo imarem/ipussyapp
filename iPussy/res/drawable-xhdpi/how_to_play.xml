@@ -3,6 +3,18 @@
 
     <item
         android:drawable="@drawable/how_3"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/how_4"
+        android:duration="200"/>
+    <item
+        android:drawable="@drawable/how_5"
+        android:duration="200"/>
+     <item
+        android:drawable="@drawable/how_4"
+        android:duration="200"/>
+     <item
+        android:drawable="@drawable/how_3"
         android:duration="150"/>
     <item
         android:drawable="@drawable/how_4"
@@ -13,5 +25,50 @@
      <item
         android:drawable="@drawable/how_4"
         android:duration="150"/>
+      <item
+        android:drawable="@drawable/how_3"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/how_4"
+        android:duration="150"/>
+   	<item
+        android:drawable="@drawable/how_5"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/how_3"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/how_4"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/how_5"
+        android:duration="100"/>
+     <item
+        android:drawable="@drawable/how_4"
+        android:duration="100"/>
+       <item
+        android:drawable="@drawable/how_3"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/how_4"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/how_5"
+        android:duration="100"/>
+     <item
+        android:drawable="@drawable/how_4"
+        android:duration="100"/>
+            <item
+        android:drawable="@drawable/how_3"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/how_4"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/how_5"
+        android:duration="100"/>
+     <item
+        android:drawable="@drawable/how_4"
+        android:duration="100"/>
 
 </animation-list>

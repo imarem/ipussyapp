@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">iPussy</string>
+    <string name="app_name">Magic Fingers</string>
     <string name="splash">splash</string>
     <string name="select">select</string>
     <string name="description">description</string>
@@ -33,7 +33,7 @@
 	<string name="preference">Preferències</string>
     <string name="preferenceConfig">Configuració d\'usuari</string>
     <string name="preferenceName">Nom de usuari</string>
-    <string name="preferenceVolumen">Volum</string>
+    <string name="preferenceVolumen">Música</string>
     <string name="preferenceShowHowToPlay">Mostrar Ajuda</string>
     <string name="preferenceVibrate">Vibració</string>
     <string name="preferenceUpdates">Actualitzacions automàtiques</string>
@@ -61,4 +61,5 @@
     <string name="label_game_lower">Més ràpid!!</string>
     <string name="label_game_start">Toca\'m</string>
     <string name="BtnPlay">Play</string>
+    <string name="BtnRmsAds">ADS</string>
 </resources>

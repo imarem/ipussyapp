@@ -36,7 +36,7 @@
             android:title="@string/preferenceVersion" />
         <Preference
             android:key="about"
-            android:summary="ipussy.com"
+            android:summary="magicfingersapp.com"
             android:title="@string/preferenceAbout" />
         <Preference
             android:key="terms"
